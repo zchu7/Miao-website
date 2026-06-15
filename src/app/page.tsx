@@ -1,146 +1,139 @@
-import type { Metadata } from 'next'
+'use client'
 import Link from 'next/link'
-import { ArrowRight, Quote } from 'lucide-react'
-import Hero from '@/components/home/Hero'
-import WhyChooseUs from '@/components/home/WhyChooseUs'
-import FeaturedAreas from '@/components/home/FeaturedAreas'
-import SectionHeading from '@/components/ui/SectionHeading'
-import Badge from '@/components/ui/Badge'
-import { articles } from '@/lib/data/articles'
-import { formatDate } from '@/lib/utils'
+import { useLang, t } from '@/context/LangContext'
+import PreFooter from '@/components/layout/PreFooter'
 
-export const metadata: Metadata = {
-  title: 'Miao Immigration and Refugee Lawyers',
-  description:
-    'Expert immigration and refugee legal services in Canada. Compassionate, experienced lawyers helping clients with refugee claims, family sponsorship, work permits, and more.',
-}
+const tcServices = ['技術移民', '配偶簽證', '父母簽證', '學生簽證', '訪客簽證', '商務簽證', '僱主擔保簽證', '其他簽證']
+const scServices = ['技术移民', '配偶签证', '父母签证', '学生签证', '访客签证', '商务签证', '雇主担保签证', '其他签证']
 
-const testimonials = [
+const tcAppeals = ['AAT 上訴', '聯邦法院', '部長干預', 'IGIS 投訴']
+const scAppeals = ['AAT 上诉', '联邦法院', '部长干预', 'IGIS 投诉']
+
+const newsCards = [
   {
-    quote:
-      "The team at Miao Immigration guided me through my refugee claim with incredible care and expertise. I felt supported every step of the way. I now have my permanent residency and cannot thank them enough.",
-    name: 'A.K.',
-    detail: 'Refugee Claimant → Permanent Resident',
+    tcTitle: '2024年技術移民最新政策解析',
+    scTitle: '2024年技术移民最新政策解析',
+    date: '2024-06-01',
+    tcCat: '移民資訊',
+    scCat: '移民资讯',
+    tcExcerpt: '閱讀更多 →',
+    scExcerpt: '阅读更多 →',
   },
   {
-    quote:
-      "After two failed sponsorship applications on my own, Miao's lawyers identified exactly what was going wrong. My wife's visa was approved within eight months. Professional, responsive, and worth every penny.",
-    name: 'M.T.',
-    detail: 'Family Sponsorship Client',
-  },
-  {
-    quote:
-      "I was facing a removal order and felt completely lost. The team filed an urgent stay application and argued my case before the Federal Court. I'm still here with my family because of their work.",
-    name: 'S.R.',
-    detail: 'Federal Court Review Client',
+    tcTitle: '配偶簽證申請流程全攻略',
+    scTitle: '配偶签证申请流程全攻略',
+    date: '2024-05-15',
+    tcCat: '簽證指南',
+    scCat: '签证指南',
+    tcExcerpt: '閱讀更多 →',
+    scExcerpt: '阅读更多 →',
   },
 ]
 
-export default function HomePage() {
-  const recentArticles = articles.slice(0, 3)
+export default function Home() {
+  const { lang } = useLang()
+  const services = lang === 'tc' ? tcServices : scServices
+  const appeals = lang === 'tc' ? tcAppeals : scAppeals
 
   return (
     <>
-      <Hero />
-      <WhyChooseUs />
-      <FeaturedAreas />
+      {/* Hero */}
+      <section className="hero">
+        <div className="hero-chevron" />
+        <div className="hero-blue" />
+        <div className="hero-inner">
+          <span className="hero-eyebrow">Albert Arthur Lawyers</span>
+          <h1>{t('移民律師及/\n註冊移民代理', '移民律师及/\n注册移民代理', lang)}</h1>
+          <p className="hero-desc">
+            {t(
+              '我們是悉尼精品移民律師事務所，專注於澳洲移民法律服務，提供專業、高效、個人化的移民諮詢與申請服務。',
+              '我们是悉尼精品移民律师事务所，专注于澳洲移民法律服务，提供专业、高效、个性化的移民咨询与申请服务。',
+              lang
+            )}
+          </p>
+          <div className="hero-awards">
+            <div className="award-row">
+              <div className="award-circle gold">2024<br/>Best<br/>Firm</div>
+              <div className="award-circle gold">Top<br/>Rated<br/>2024</div>
+              <div className="award-circle">Excellence<br/>Award</div>
+            </div>
+          </div>
+          <Link href="/contact" className="btn-enquire">
+            {t('免費諮詢', '免费咨询', lang)}
+          </Link>
+        </div>
+      </section>
 
-      {/* Testimonials */}
-      <section className="section-padding bg-navy-700">
-        <div className="container-narrow">
-          <SectionHeading
-            eyebrow="Client Stories"
-            title="What Our Clients Say"
-            subtitle="We measure our success by the lives we help transform."
-            centered
-            light
-          />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map(({ quote, name, detail }) => (
-              <div
-                key={name}
-                className="bg-navy-800 rounded-xl p-6 border border-navy-600 relative"
-              >
-                <Quote className="w-8 h-8 text-gold-400/40 absolute top-4 right-4" />
-                <p className="text-navy-200 text-sm leading-relaxed mb-6 italic">
-                  &ldquo;{quote}&rdquo;
-                </p>
-                <div className="border-t border-navy-600 pt-4">
-                  <p className="text-white font-semibold text-sm">{name}</p>
-                  <p className="text-gold-400 text-xs mt-0.5">{detail}</p>
-                </div>
-              </div>
-            ))}
+      {/* Services */}
+      <section className="section">
+        <div className="wrap">
+          <h2 className="section-title">{t('我們的服務', '我们的服务', lang)}</h2>
+          <div className="service-cols">
+            <div className="service-col">
+              {services.slice(0, 4).map(s => (
+                <Link href="/services" className="service-link" key={s}>
+                  <span>{s}</span>
+                  <span className="arrow">›</span>
+                </Link>
+              ))}
+            </div>
+            <div className="service-col">
+              {services.slice(4).map(s => (
+                <Link href="/services" className="service-link" key={s}>
+                  <span>{s}</span>
+                  <span className="arrow">›</span>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Recent Articles */}
-      <section className="section-padding bg-white">
-        <div className="container-narrow">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
-            <SectionHeading
-              eyebrow="Latest Insights"
-              title="Immigration News & Articles"
-              subtitle="Stay informed with the latest updates in Canadian immigration law."
-            />
-            <Link
-              href="/articles"
-              className="flex items-center gap-2 text-gold-500 font-semibold hover:text-gold-400 transition-colors whitespace-nowrap mb-12 md:mb-0"
-            >
-              View All Articles
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {recentArticles.map((article) => (
-              <Link
-                key={article.id}
-                href={`/articles/${article.slug}`}
-                className="group bg-navy-50 rounded-xl overflow-hidden border border-navy-100 hover:shadow-lg transition-shadow"
-              >
-                {/* Gradient placeholder */}
-                <div className="h-40 bg-gradient-to-br from-navy-700 to-navy-900 flex items-center justify-center">
-                  <Badge label={article.category} variant="white" />
-                </div>
-                <div className="p-5">
-                  <h3 className="font-serif font-bold text-navy-800 text-base leading-snug mb-2 group-hover:text-gold-500 transition-colors line-clamp-2">
-                    {article.title}
-                  </h3>
-                  <p className="text-navy-500 text-sm leading-relaxed mb-4 line-clamp-2">
-                    {article.excerpt}
-                  </p>
-                  <div className="flex items-center justify-between text-xs text-navy-400">
-                    <span>{formatDate(article.date)}</span>
-                    <span>{article.readTime}</span>
-                  </div>
-                </div>
+      {/* Appeals */}
+      <section className="section alt">
+        <div className="wrap">
+          <h2 className="section-title">{t('上訴 / 豁免', '上诉 / 豁免', lang)}</h2>
+          <div className="appeal-grid">
+            {appeals.map(a => (
+              <Link href="/services" className="appeal-item" key={a}>
+                <span>{a}</span>
+                <span className="arr">›</span>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Banner */}
-      <section className="bg-gradient-to-r from-navy-800 via-navy-700 to-navy-800 border-t-4 border-gold-400">
-        <div className="container-narrow section-padding py-16 text-center">
-          <h2 className="font-serif text-3xl md:text-4xl font-bold text-white mb-4">
-            Ready to Start Your Case?
-          </h2>
-          <p className="text-navy-200 text-lg mb-8 max-w-xl mx-auto">
-            Book a free consultation with our experienced immigration lawyers today.
-            Your first step toward a secure future starts here.
-          </p>
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-gold-400 text-navy-900 rounded-md font-semibold text-base hover:bg-gold-300 transition-colors"
-          >
-            Book a Free Consultation
-            <ArrowRight className="w-5 h-5" />
-          </Link>
+      {/* News */}
+      <section className="section">
+        <div className="wrap">
+          <h2 className="section-title">{t('最新資訊', '最新资讯', lang)}</h2>
+          <div className="news-grid">
+            {newsCards.map((card, i) => (
+              <div className="news-card" key={i}>
+                <div className="news-img" />
+                <div className="news-body">
+                  <div className="news-cats">
+                    <span className="news-cat">{t(card.tcCat, card.scCat, lang)}</span>
+                  </div>
+                  <h3>{t(card.tcTitle, card.scTitle, lang)}</h3>
+                  <p className="news-date">{card.date}</p>
+                  <p className="news-excerpt">{t(card.tcExcerpt, card.scExcerpt, lang)}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="news-controls">
+            <button className="nc-arrow">‹</button>
+            <button className="nc-arrow">›</button>
+            <Link href="/resources" className="btn-resources">
+              {t('查看所有資源', '查看所有资源', lang)}
+            </Link>
+          </div>
         </div>
       </section>
+
+      <PreFooter />
     </>
   )
 }

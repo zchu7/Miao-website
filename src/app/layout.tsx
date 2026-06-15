@@ -1,37 +1,23 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import Navbar from '@/components/layout/Navbar'
+import { LangProvider } from '@/context/LangContext'
+import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 
 export const metadata: Metadata = {
-  title: {
-    default: 'Miao Immigration and Refugee Lawyers',
-    template: '%s | Miao Immigration Lawyers',
-  },
-  description:
-    'Expert immigration and refugee legal services in Canada. Compassionate, experienced lawyers helping clients with refugee claims, family sponsorship, work permits, study permits, and more.',
-  keywords: [
-    'immigration lawyer',
-    'refugee lawyer',
-    'Canada immigration',
-    'family sponsorship',
-    'work permit',
-    'study permit',
-    'Express Entry',
-  ],
+  title: '移民律師及註冊移民代理 - Albert Arthur Lawyers',
+  description: 'Albert Arthur Lawyers - Sydney boutique immigration law firm',
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className="bg-white text-navy-900 font-sans">
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+    <html lang="zh-Hant">
+      <body>
+        <LangProvider>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+        </LangProvider>
       </body>
     </html>
   )
